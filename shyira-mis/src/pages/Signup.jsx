@@ -97,7 +97,7 @@ const togglePasswordVisibility = () => {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await axios.get('${process.env.REACT_APP_BACKEND_URL}/api/departments');
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/departments`);
         setDepartments(response.data);
       } catch (error) {
         console.error('Error fetching departments:', error);

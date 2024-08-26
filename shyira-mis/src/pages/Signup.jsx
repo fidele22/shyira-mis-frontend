@@ -45,40 +45,35 @@ const togglePasswordVisibility = () => {
     e.preventDefault();
     if (validateLoginForm()) {
       try {
-        const res = await axios.post('${process.env.REACT_APP_BACKEND_URL}/api/login', { email, password });
+        const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/login`, { email, password });
         const { token, role } = res.data;
-
+  
         // Save the token in localStorage
         localStorage.setItem('token', token);
-
+  
         // Redirect to the appropriate dashboard
-      if (role === 'admin') {
-        navigate('/admin-dashboard');
-      } 
-      else if(role === 'LOGISTIC') {
-        navigate('/LOGISTIC');
-      }
-      else if(role === 'ACCOUNTANT') {
-        navigate('/ACCOUNTANT');
-      }
-      else if(role === 'DAF') {
-        navigate('/DAF');
-      }
-      else if(role === 'DG') {
-        navigate('/DG');
-      }
-      else if(role === 'HOD') {
-        navigate('/HOD');
-      }
-      else {
-        navigate('/login');
-      }
+        if (role === 'admin') {
+          navigate('/admin-dashboard');
+        } else if (role === 'LOGISTIC') {
+          navigate('/LOGISTIC');
+        } else if (role === 'ACCOUNTANT') {
+          navigate('/ACCOUNTANT');
+        } else if (role === 'DAF') {
+          navigate('/DAF');
+        } else if (role === 'DG') {
+          navigate('/DG');
+        } else if (role === 'HOD') {
+          navigate('/HOD');
+        } else {
+          navigate('/login');
+        }
       } catch (err) {
-        console.error('Login error:', err);
+        console.error('Login error:', err.response ? err.response.data : err.message);
         alert('Invalid email or password');
       }
     }
   };
+  
 
   // Registration logic
   const [formData, setFormData] = useState({
@@ -102,7 +97,7 @@ const togglePasswordVisibility = () => {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/departments');
+        const response = await axios.get('${process.env.REACT_APP_BACKEND_URL}/api/departments');
         setDepartments(response.data);
       } catch (error) {
         console.error('Error fetching departments:', error);
@@ -126,7 +121,7 @@ const togglePasswordVisibility = () => {
   useEffect(() => {
     const fetchPositions = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/positions');
+        const response = await axios.get('${process.env.REACT_APP_BACKEND_URL}/api/positions');
         setPositions(response.data);
       } catch (error) {
         console.error('Error fetching positions:', error);
@@ -197,7 +192,7 @@ const togglePasswordVisibility = () => {
           formDataToSend.append(key, formData[key]);
         }
 
-        const response = await axios.post('http://localhost:5000/api/users/register', formDataToSend, {
+        const response = await axios.post('${process.env.REACT_APP_BACKEND_URL}/api/users/register', formDataToSend, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
 

@@ -25,7 +25,7 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/users/profile', {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/users/profile`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
@@ -74,7 +74,7 @@ const UserProfile = () => {
         formDataToSend.append('signature', signatureFile);
       }
 
-      const response = await axios.put('http://localhost:5000/api/profile/update', formDataToSend, {
+      const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/profile/update`, formDataToSend, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'multipart/form-data',
@@ -91,7 +91,7 @@ const UserProfile = () => {
 
   const handlePasswordSave = async () => {
     try {
-      const response = await axios.put('http://localhost:5000/api/profile/change-password', passwordData, {
+      const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/profile/change-password`, passwordData, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }

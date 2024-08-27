@@ -22,7 +22,7 @@ const ServiceForm = () => {
       setFormData({ name: '', description: '' }); // Clear form after submission
     } catch (error) {
       console.error('Error creating service:', error);
-      alert('Adding Position Failed!!')
+      alert('Adding role Failed!!')
     }
   };
 

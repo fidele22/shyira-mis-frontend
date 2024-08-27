@@ -16,26 +16,26 @@ const ServiceForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/positions/addPosition', formData);
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/positions/addPosition`, formData);
       console.log('Service created:', response.data);
-      alert('Position added Successfuly')
+      alert('position added Successfuly')
       setFormData({ name: '', description: '' }); // Clear form after submission
     } catch (error) {
       console.error('Error creating service:', error);
-      alert('Adding Position Failed!!')
+      alert('position Service Failed!!')
     }
   };
 
   return (
     <div className='add-service'>
-      <h1>Add Position</h1>
+      <h1>Add Service</h1>
       <div className="add-service-form">
-      <h2>Add New Position</h2>
+      <h2>Add New Service</h2>
       <form onSubmit={handleSubmit}>
       <div className='loginsignup-fields'>
             <div className='flex-container'>
               <div className='left'>
-                <label>Position Name</label>
+                <label>Service Name</label>
                 <input type="text" name="name" value={formData.name} onChange={handleChange} required />
               </div>
               <div className='right'>
@@ -44,7 +44,7 @@ const ServiceForm = () => {
               </div>
              </div>
             </div>
-        <button type="submit">Add Position</button>
+        <button type="submit">Add Service</button>
       </form>
       </div>
       

@@ -20,7 +20,7 @@ const DashboardOverview = () => {
       }
 
       try {
-        const response = await fetch('http://localhost:5000/api/users/profile', {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/users/profile`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -50,7 +50,7 @@ const DashboardOverview = () => {
   }
 
   try {
-    const response = await axios.get('http://localhost:5000/api/positions/dashboard/stats', {
+    const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/positions/dashboard/stats`, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },

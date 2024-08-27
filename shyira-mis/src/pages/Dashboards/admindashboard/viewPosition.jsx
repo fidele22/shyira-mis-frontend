@@ -10,7 +10,7 @@ const ViewPosition = () => {
   useEffect(() => {
     const fetchPositions = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/positions');
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/positions`);
         setPositions(response.data);
       } catch (error) {
         console.error('Error fetching positions:', error);
@@ -27,13 +27,13 @@ const ViewPosition = () => {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`http://localhost:5000/api/positions/${editPosition._id}`, {
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/positions/${editPosition._id}`, {
         name: positionName,
       });
       setEditPosition(null);
       setPositionName('');
       // Fetch updated positions
-      const response = await axios.get('http://localhost:5000/api/positions');
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/positions`);
       setPositions(response.data);
     } catch (error) {
       console.error('Error updating position:', error);
@@ -42,9 +42,9 @@ const ViewPosition = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/positions/${id}`);
+      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/positions/${id}`);
       // Fetch updated positions
-      const response = await axios.get('http://localhost:5000/api/positions');
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/positions`);
       setPositions(response.data);
     } catch (error) {
       console.error('Error deleting position:', error);

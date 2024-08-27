@@ -15,7 +15,7 @@ const FuelRequisitionForm = () => {
   useEffect(() => {
     const fetchRequisitions = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/fuel-requisition');
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/fuel-requisition`);
         setRequisitions(response.data);
         setLoading(false);
       } catch (error) {
@@ -31,7 +31,7 @@ const FuelRequisitionForm = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/users/profile', {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/users/profile`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -47,7 +47,7 @@ const FuelRequisitionForm = () => {
 
   const handleRequestClick = async (requestId) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/fuel-requisition/${requestId}`);
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/fuel-requisition/${requestId}`);
       setSelectedRequest(response.data);
       setFormData(response.data);
       setIsEditing(false);
@@ -73,7 +73,7 @@ const FuelRequisitionForm = () => {
 
   const handleSaveClick = async () => {
     try {
-      const response = await axios.put(`http://localhost:5000/api/fuel-requisition/${selectedRequest._id}`, formData);
+      const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/fuel-requisition/${selectedRequest._id}`, formData);
       setSelectedRequest(response.data);
       setIsEditing(false);
 

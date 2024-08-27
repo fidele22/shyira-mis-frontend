@@ -24,7 +24,7 @@ const ViewItems = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/users');
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/users`);
         setUsers(response.data);
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -42,7 +42,7 @@ const ViewItems = () => {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/departments');
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/departments`);
         setDepartments(response.data);
       } catch (error) {
         console.error('Error fetching departments:', error);
@@ -55,7 +55,7 @@ const ViewItems = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/services');
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/services`);
         setServices(response.data);
       } catch (error) {
         console.error('Error fetching services:', error);
@@ -68,7 +68,7 @@ const ViewItems = () => {
   useEffect(() => {
     const fetchPositions = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/positions');
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/positions`);
         setPositions(response.data);
       } catch (error) {
         console.error('Error fetching positions:', error);
@@ -81,7 +81,7 @@ const ViewItems = () => {
   useEffect(() => {
     const fetchUserRoles = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/roles');
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/roles`);
         setRoles(response.data);
       } catch (error) {
         console.error('Error fetching roles:', error);
@@ -108,7 +108,7 @@ const ViewItems = () => {
 
   const handleDeleteClick = async (userId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/users/${userId}`);
+      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/users/${userId}`);
       setUsers(users.filter((user) => user._id !== userId));
     } catch (error) {
       console.error('Error deleting user:', error);
@@ -138,7 +138,7 @@ const ViewItems = () => {
     }
     
     try {
-      await axios.put(`http://localhost:5000/api/profile/${editingUser}`, updatedFormData, {
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/profile/${editingUser}`, updatedFormData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

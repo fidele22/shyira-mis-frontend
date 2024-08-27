@@ -21,13 +21,13 @@ const RequisitionForm = () => {
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        const carResponse = await axios.get('http://localhost:5000/api/forms-data/cars');
+        const carResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/forms-data/cars`);
         setCarOptions(carResponse.data);
 
-        const destinationResponse = await axios.get('http://localhost:5000/api/forms-data/destinations');
+        const destinationResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/forms-data/destinations`);
         setDestinationOptions(destinationResponse.data);
 
-        const reasonResponse = await axios.get('http://localhost:5000/api/forms-data/reasons');
+        const reasonResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/forms-data/reasons`);
         setReasonOptions(reasonResponse.data);
       } catch (error) {
         console.error('Error fetching options:', error);
@@ -78,7 +78,7 @@ const RequisitionForm = () => {
 
     try {
         // Send the data to the backend as JSON instead of FormData
-        const response = await axios.post('http://localhost:5000/api/fuel-requisition/submit', formData, {
+        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/fuel-requisition/submit`, formData, {
             headers: {
                 'Content-Type': 'application/json',
         
@@ -107,7 +107,7 @@ const RequisitionForm = () => {
 useEffect(() => {
   const fetchUserProfile = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/users/profile', {
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/users/profile`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }

@@ -28,14 +28,14 @@ const ServiceForm = () => {
 
   return (
     <div className='add-service'>
-      <h1>Add Service</h1>
+      <h1>Add Position</h1>
       <div className="add-service-form">
-      <h2>Add New Service</h2>
+      <h2>Add New Position</h2>
       <form onSubmit={handleSubmit}>
       <div className='loginsignup-fields'>
             <div className='flex-container'>
               <div className='left'>
-                <label>Service Name</label>
+                <label>Position Name</label>
                 <input type="text" name="name" value={formData.name} onChange={handleChange} required />
               </div>
               <div className='right'>
@@ -44,7 +44,7 @@ const ServiceForm = () => {
               </div>
              </div>
             </div>
-        <button type="submit">Add Service</button>
+        <button type="submit">Add Position</button>
       </form>
       </div>
       

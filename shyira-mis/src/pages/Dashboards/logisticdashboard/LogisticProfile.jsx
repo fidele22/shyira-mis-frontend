@@ -25,7 +25,7 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/users/profile', {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/users/profile`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
@@ -75,7 +75,7 @@ const UserProfile = () => {
         formDataToSend.append('signature', signatureFile);
       }
 
-      const response = await axios.put('http://localhost:5000/api/profile', formDataToSend, {
+      const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/profile`, formDataToSend, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'multipart/form-data',
@@ -93,7 +93,7 @@ const UserProfile = () => {
 
   const handleSaveWithoutSignature = async () => {
     try {
-      const response = await axios.put('http://localhost:5000/api/profile', formData, {
+      const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/profile`, formData, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },

@@ -33,7 +33,7 @@ const ApprovedRequests = () => {
 
   const fetchLogisticUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/users/logistic-users');
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/users/logistic-users`);
       setLogisticUsers(response.data);
     } catch (error) {
       console.error('Error fetching logistic users:', error);
@@ -42,7 +42,7 @@ const ApprovedRequests = () => {
 
   const fetchDafUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/users/daf-users');
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/users/daf-users`);
       setDafUsers(response.data);
     } catch (error) {
       console.error('Error fetching daf users:', error);
@@ -52,7 +52,7 @@ const ApprovedRequests = () => {
   const fetchApprovedRequests = async () => {
     try {
       const token = localStorage.getItem('token'); // Assuming you're storing your JWT token in localStorage
-      const response = await axios.get('http://localhost:5000/api/approve/approved', {
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/approve/approved`, {
         headers: { Authorization: `Bearer ${token}` } // Send token with request
       });
       setRequests(response.data);
@@ -76,11 +76,11 @@ const ApprovedRequests = () => {
 
   const handleRequestClick = async (requestId) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/approve/${requestId}`);
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/approve/${requestId}`);
       setSelectedRequest(response.data);
 
       // Update the clicked status to true
-      await axios.put(`http://localhost:5000/api/approve/${requestId}`, { clicked: true });
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/approve/${requestId}`, { clicked: true });
 
       // Refresh the requests list
       fetchApprovedRequests();
@@ -91,7 +91,7 @@ const ApprovedRequests = () => {
 
   const handleReceivedClick = async (requestId) => {
     try {
-      const response = await axios.post(`http://localhost:5000/api/approve/receive/${requestId}`);
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/approve/receive/${requestId}`);
       console.log(response.data.message);
       setModalMessage('To Sign reception requisition Successful!!');
       setIsSuccess(true); // Set the success state

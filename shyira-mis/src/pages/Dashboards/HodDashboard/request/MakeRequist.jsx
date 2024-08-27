@@ -20,7 +20,7 @@ const LogisticRequestForm = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/stocks');
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/stocks`);
         setItemOptions(response.data);
       } catch (error) {
         console.error('Error fetching items:', error);
@@ -33,7 +33,7 @@ const LogisticRequestForm = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/users/profile', {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/users/profile`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
@@ -59,7 +59,7 @@ const LogisticRequestForm = () => {
    
 
     try {
-      const response = await axios.post('http://localhost:5000/api/UserRequest/submit', {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/UserRequest/submit`, {
         department,
         items: JSON.stringify(items),
         date,

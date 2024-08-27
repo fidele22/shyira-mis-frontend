@@ -23,7 +23,7 @@ const LogisticRequestForm = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/stocks');
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/stocks`);
         setItemOptions(response.data);
       } catch (error) {
         console.error('Error fetching items:', error);
@@ -41,7 +41,7 @@ const LogisticRequestForm = () => {
     formData.append('supplierName', supplierName); 
    
     try {
-      const response = await axios.post('http://localhost:5000/api/LogisticRequest/submit', formData, {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/LogisticRequest/submit`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

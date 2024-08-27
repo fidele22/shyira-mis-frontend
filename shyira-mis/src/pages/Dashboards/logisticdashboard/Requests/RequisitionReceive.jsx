@@ -40,7 +40,7 @@ const LogisticRequestForm = () => {
 
   const fetchRequests = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/UserRequest');
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/UserRequest`);
       setRequests(response.data);
       setFilteredRequests(response.data); // Initialize filteredRequests with all requests
     } catch (error) {
@@ -52,7 +52,7 @@ const LogisticRequestForm = () => {
   
   const handleRequestClick = async (requestId) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/UserRequest/${requestId}`);
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/UserRequest/${requestId}`);
       setSelectedRequest(response.data);
       setEditFormData(response.data);
       setIsEditing(false);
@@ -99,7 +99,7 @@ const LogisticRequestForm = () => {
   const handleUpdateSubmit = async () => {
   
     try {
-      await axios.put(`http://localhost:5000/api/UserRequest/${selectedRequest._id}`, editFormData, { clicked: true });
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/UserRequest/${selectedRequest._id}`, editFormData, { clicked: true });
       
       setModalMessage('Requisition Updated successfull!!');
       setIsSuccess(true); // Set the error state
@@ -119,7 +119,7 @@ const LogisticRequestForm = () => {
 const handleVerifySubmit = async () => {
   
   try {
-    await axios.put(`http://localhost:5000/api/UserRequest/verified/${selectedRequest._id}`, { clicked: true });
+    await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/UserRequest/verified/${selectedRequest._id}`, { clicked: true });
   
     setModalMessage('Requisition Verified successfull!');
     setIsSuccess(true); // Set the error state
@@ -186,7 +186,7 @@ const handleVerifySubmit = async () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/users/profile', {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/users/profile`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }

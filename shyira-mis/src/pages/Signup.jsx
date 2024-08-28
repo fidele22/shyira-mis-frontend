@@ -20,12 +20,18 @@ const AuthForm = () => {
   const [errors, setErrors] = useState({});
 
   // Add state for password visibility toggle
-const [showPassword, setShowPassword] = useState(false);
+const [showPasswordone, setShowPasswordone] = useState(false);
+const [showPasswordtwo, setShowPasswordtwo] = useState(false);
 
 // Toggle function
-const togglePasswordVisibility = () => {
-  setShowPassword(!showPassword);
+const togglePasswordVisibilityone = () => {
+  setShowPasswordone(!showPasswordone);
 };
+
+const togglePasswordVisibilitytwo = () => {
+  setShowPasswordtwo(!showPasswordtwo);
+};
+
 
   const navigate = useNavigate();
 
@@ -55,15 +61,15 @@ const togglePasswordVisibility = () => {
         if (role === 'admin') {
           navigate('/admin-dashboard');
         } else if (role === 'LOGISTIC') {
-          navigate('/LOGISTIC');
+          navigate('/logistic');
         } else if (role === 'ACCOUNTANT') {
-          navigate('/ACCOUNTANT');
+          navigate('/accountant');
         } else if (role === 'DAF') {
-          navigate('/DAF');
+          navigate('/daf');
         } else if (role === 'DG') {
           navigate('/DG');
         } else if (role === 'HOD') {
-          navigate('/HOD');
+          navigate('/hod');
         } else {
           navigate('/login');
         }
@@ -192,7 +198,7 @@ const togglePasswordVisibility = () => {
           formDataToSend.append(key, formData[key]);
         }
 
-        const response = await axios.post('${process.env.REACT_APP_BACKEND_URL}/api/users/register', formDataToSend, {
+        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/users/register`, formDataToSend, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
 
@@ -264,15 +270,15 @@ const togglePasswordVisibility = () => {
           <input type="text" name="email" value={formData.email} onChange={handleChange} placeholder='Email address'  />
           {registerErrors.email && <p className="error">{registerErrors.email}</p>}
 
-          <input  type={showPassword ? 'text' : 'password'} name="password" value={formData.password} onChange={handleChange} placeholder='Password'  />
-          <span onClick={togglePasswordVisibility} className="password-toggle-icon">
-            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          <input  type={showPasswordone ? 'text' : 'password'} name="password" value={formData.password} onChange={handleChange} placeholder='Password'  />
+          <span onClick={togglePasswordVisibilityone} className="password-toggle-icon">
+            {showPasswordone ? <FaEyeSlash /> : <FaEye />}
     </span>
           {registerErrors.password && <p className="error">{registerErrors.password}</p>}
 
-          <input type={showPassword ? 'text' : 'password'} name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder='Confirm Password'  />
-          <span onClick={togglePasswordVisibility} className="confirm-password-toggle-icon">
-      {showPassword ? <FaEyeSlash /> : <FaEye />}
+          <input type={showPasswordtwo ? 'text' : 'password'} name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder='Confirm Password'  />
+          <span onClick={togglePasswordVisibilitytwo} className="confirm-password-toggle-icon">
+      {showPasswordtwo ? <FaEyeSlash /> : <FaEye />}
     </span>
           {registerErrors.confirmPassword && <p className="error">{registerErrors.confirmPassword}</p>}
 
@@ -285,13 +291,20 @@ const togglePasswordVisibility = () => {
           <span>Use your account</span>
           <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email address'  />
           {errors.email && <p className="error">{errors.email}</p>}
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password'  />
+
+          <input type={showPasswordone ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Password'  />
+          <span onClick={togglePasswordVisibilityone} className="password-view-icon">
+            {showPasswordone ? <FaEyeSlash /> : <FaEye />} </span>
           {errors.password && <p className="error">{errors.password}</p>}
+
+
+
           <a href="/forgot-password">Forgot your password?</a>
+
           <button className='login-btn'>Login</button>
           <span>Don't have an account? <Link to="#" onClick={handleSignUpClick}>Sign Up</Link></span>
         </form>
-      </div>s
+      </div>
       <div className="overlay-container">
         <div className="overlay">
           <div className="overlay-panel overlay-left">

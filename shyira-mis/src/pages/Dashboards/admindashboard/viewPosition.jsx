@@ -40,9 +40,9 @@ const ViewPosition = () => {
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (positionId) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/positions/${id}`);
+      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/positions/delete/${positionId}`);
       // Fetch updated positions
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/positions`);
       setPositions(response.data);

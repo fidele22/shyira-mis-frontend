@@ -140,7 +140,7 @@ const ForwardedRequests = () => {
             <li key={index}>
               <p onClick={() => handleRequestClick(request._id)}>
           Requisition Form from <u><b>logistic</b></u>done on {new Date(request.date).toDateString()}
-          <span>{!request.clicked ? 'New Request' : ''}</span> 
+        {/* <span>{!request.clicked ? 'New Request' : ''}</span> */} 
         </p>
             </li>
           ))}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './viewItems.css';
 
 const DataDisplay = ({ onItemSelect }) => {
   const [data, setData] = useState([]);
@@ -17,17 +18,18 @@ const DataDisplay = ({ onItemSelect }) => {
 
     fetchData();
   }, []);
+
   // Filter data based on search query
   const filteredData = data.filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <div>
+    <div className='hod-items'>
       <h2>Item list</h2>
-      <h3> Here are Items in stored in stock with its updated balance</h3>
-         {/* Search input field */}
-         <input
+
+      {/* Search input field */}
+      <input
         type="text"
         placeholder="Search by name..."
         value={searchQuery}
@@ -38,23 +40,15 @@ const DataDisplay = ({ onItemSelect }) => {
       <table>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Quantity</th>
-            <th>Price per Unit</th>
-            <th>Total Amount</th>
-            <th>Actions</th>
+            <th>Item Name</th>
+          {/*<th>Quantity Available</th>*/}  
           </tr>
         </thead>
         <tbody>
           {filteredData.map((item, index) => (
             <tr key={index}>
               <td>{item.name}</td>
-              <td>{item.quantity}</td>
-              <td>{item.pricePerUnit}</td>
-              <td>{item.totalAmount}</td>
-              <td>
-                <button className='stock-details-btn' onClick={() => onItemSelect(item)}>View Stock Details</button>
-              </td>
+             {/*<td>{item.quantity}</td>*/} 
             </tr>
           ))}
         </tbody>

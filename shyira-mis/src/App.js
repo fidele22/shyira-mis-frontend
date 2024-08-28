@@ -7,7 +7,7 @@ import ResetPassword from './pages/ResetPasswordPage';
 import AdminDashboard from './pages/Dashboards/admindashboard/AdminDashboard';
 import ProtectedRoute from './Component/ProtectedRoute';
 import LogisticDashboard from './pages/Dashboards/logisticdashboard/LogisticDashboard';
-import AccountantDashboard from './pages/Dashboards/accountantdashboard/AccountantDashboard'
+import AccountantDashboard from './pages/Dashboards/Accountantashboard/accountantdashboard'
 import DafDashboard from './pages/Dashboards/dafdashboard/dafdashboard'
 import HodDashboard from './pages/Dashboards/HodDashboard/hoddashboard'
 import DGDashboard from './pages/Dashboards/DGdashboard/DGdashboard'

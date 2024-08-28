@@ -28,6 +28,12 @@
     padding: 30px;
     border-radius: 5px;
     width: 400px;
+    overflow-y: scroll;
+  }
+  .edit-user-close-btn{
+    position: absolute;
+    right:0;
+    top: 1;
   }
   .editinguser-form h2{
      text-align: center;

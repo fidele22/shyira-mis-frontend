@@ -203,7 +203,7 @@ const handleVerifySubmit = async () => {
 
   const handleRejectClick = async (requestId) => {
     try {
-      await axios.put(`http://localhost:5000/api/UserRequest/rejected/${requestId}`, { clicked: true });
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/UserRequest/rejected/${requestId}`, { clicked: true });
       
       setModalMessage(' requisition rejected Successful!!');
       setIsSuccess(true); // Set the success state
@@ -295,7 +295,8 @@ const handleVerifySubmit = async () => {
                             type="text" 
                             name="itemName" 
                             value={item.itemName} 
-                            onChange={(e) => handleItemChange(idx, e)} 
+                            onChange={(e) => handleItemChange(idx, e)}
+                            readOnly 
                           />
                         </td>
                         <td>
@@ -304,6 +305,7 @@ const handleVerifySubmit = async () => {
                             name="quantityRequested" 
                             value={item.quantityRequested} 
                             onChange={(e) => handleItemChange(idx, e)} 
+                            readOnly
                           />
                         </td>
                         <td>

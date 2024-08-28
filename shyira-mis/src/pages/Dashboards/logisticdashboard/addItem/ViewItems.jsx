@@ -21,7 +21,19 @@ const DataDisplay = ({ onItemSelect }) => {
   const filteredData = data.filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
+  const handleDelete = async (id) => {
+    const isConfirmed = window.confirm("Are you sure you want to delete this item?");
+    if (isConfirmed) {
+      try {
+        await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/stocks/${id}`);
+        // Fetch updated data
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/stocks`);
+        setData(response.data);
+      } catch (error) {
+        console.error('Error deleting item:', error);
+      }
+    }
+  }
   return (
     <div>
       <h2>Item list</h2>
@@ -54,6 +66,7 @@ const DataDisplay = ({ onItemSelect }) => {
               <td>{item.totalAmount}</td>
               <td>
                 <button className='stock-details-btn' onClick={() => onItemSelect(item)}>View Stock Details</button>
+                <button className='delete-btn' onClick={() => handleDelete(item._id)}>Delete</button>
               </td>
             </tr>
           ))}

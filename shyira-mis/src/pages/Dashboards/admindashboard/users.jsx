@@ -150,6 +150,11 @@ const ViewItems = () => {
     }
   };
 
+  // Handle close form
+  const handleCloseForm = () => {
+    setEditingUser(null);
+  };
+
   const filteredUsers = users.filter(user =>
     user.firstName.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -231,6 +236,9 @@ const ViewItems = () => {
         {editingUser && (
           <div className="editing-userdata-ovelay">
             <div className="editinguser-form">
+            <button className='close-btn' onClick={handleCloseForm}>
+                <FaTimes size={24} color="darkred" />
+              </button>
               <form onSubmit={handleSubmit}>
                 <h2>Edit User</h2>
                 <label>First Name</label>

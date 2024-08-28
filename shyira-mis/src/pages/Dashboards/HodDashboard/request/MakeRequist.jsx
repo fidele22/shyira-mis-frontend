@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaQuestionCircle, FaEdit,FaTimes, FaTimesCircle, FaCheck,
-  FaCheckCircle, FaCheckDouble, FaCheckSquare } from 'react-icons/fa';
+import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import SearchableDropdown from '../../logisticdashboard/Requests/searchable'
 import './makeRequist.css'; // Import CSS for styling
 
@@ -11,10 +10,9 @@ const LogisticRequestForm = () => {
   const [date, setDate] = useState('');
   const [itemOptions, setItemOptions] = useState([]);
   const [user, setUser] = useState(null);
-
-
+  const [stockQuantities, setStockQuantities] = useState({});
   const [showModal, setShowModal] = useState(false); // State for modal visibility
-  const [modalMessage, setModalMessage] = useState(''); //
+  const [modalMessage, setModalMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(true);
 
   useEffect(() => {
@@ -22,6 +20,12 @@ const LogisticRequestForm = () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/stocks`);
         setItemOptions(response.data);
+        // Set stock quantities from the response
+        const quantities = response.data.reduce((acc, item) => {
+          acc[item._id] = item.quantity; // Assuming the response includes 'quantity' field
+          return acc;
+        }, {});
+        setStockQuantities(quantities);
       } catch (error) {
         console.error('Error fetching items:', error);
       }
@@ -47,8 +51,22 @@ const LogisticRequestForm = () => {
     fetchUserProfile();
   }, []);
 
+  const validateQuantities = () => {
+    for (const item of items) {
+      if (item.quantityRequested > (stockQuantities[item.itemId] || 0)) {
+        setModalMessage('Requested quantity exceeds available stock.');
+        setIsSuccess(false);
+        setShowModal(true);
+        return false;
+      }
+    }
+    return true;
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!validateQuantities()) return;
 
     const formData = new FormData();
     formData.append('department', department);
@@ -68,7 +86,7 @@ const LogisticRequestForm = () => {
       }, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json' // Ensure content type is J 0788765626 SON
+          'Content-Type': 'application/json' // Ensure content type is JSON
         },
       });
   
@@ -231,48 +249,21 @@ const LogisticRequestForm = () => {
               ))}
             </tbody>
           </table>
- {/* Modal pop message on success or error message */}
- {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            {isSuccess ? (
-              <div className="modal-success">
-                <FaCheckCircle size={54} color="green" />
-                <p>{modalMessage}</p>
-              </div>
-            ) : (
-              <div className="modal-error">
-                <FaTimesCircle size={54} color="red" />
-                <p>{modalMessage}</p>
-              </div>
-            )}
-            <button onClick={() => setShowModal(false)}>Close</button>
-          </div>
-        </div>
-      )}
 
-          <div>
-            <label htmlFor="hodName">Name of HOD</label>
-            {user ? (
-              <>
-                <h1>{user.firstName} {user.lastName}</h1>
-                <label htmlFor="hodSignature">HOD Signature:</label>
-                {user.signature ? (
-              <img src={`${process.env.REACT_APP_BACKEND_URL}/uploads/${user.signature}`} alt="Signature" />
-    ) : (
-      <p>No signature available</p>
-    )}
-              </>
-            ) : (
-              <p>Loading user profile...</p>
-            )}
+          <div className="submit-btn">
+            <button type="submit">Submit</button>
           </div>
 
-         
-
-          <button className='hod-submit-btn' type="submit">Send Request</button>
         </form>
       </div>
+      
+      {showModal && (
+        <div className={`modal ${isSuccess ? 'success' : 'error'}`}>
+          {isSuccess ? <FaCheckCircle /> : <FaTimesCircle />}
+          <p>{modalMessage}</p>
+          <button onClick={() => setShowModal(false)}>Close</button>
+        </div>
+      )}
     </div>
   );
 };

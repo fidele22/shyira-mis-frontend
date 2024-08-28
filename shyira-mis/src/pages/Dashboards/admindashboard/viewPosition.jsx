@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FaEdit, FaTrash,FaTimes } from 'react-icons/fa';
 import axios from 'axios';
 import './css/service.css';
 
@@ -42,15 +43,16 @@ const ViewPosition = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/positions/${id}`);
+      const response = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/positions/${id}`);
+      console.log('Delete response:', response.data); // Log the response
       // Fetch updated positions
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/positions`);
-      setPositions(response.data);
+      const fetchUpdatedPositions = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/positions`);
+      setPositions(fetchUpdatedPositions.data);
     } catch (error) {
       console.error('Error deleting position:', error);
     }
   };
-
+  
   return (
     <div className="service-data">
       <h1>Positions List</h1>
@@ -70,7 +72,7 @@ const ViewPosition = () => {
                 <td>{position.name}</td>
                 <td>
                   <button onClick={() => handleEditClick(position)}>Edit</button>
-                  <button onClick={() => handleDelete(position._id)}>Delete</button>
+                  <button onClick={() => handleDelete(position._id)}><FaTrash color='red'/></button>
                 </td>
               </tr>
             ))}

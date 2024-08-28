@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FaEdit, FaTrash,FaTimes } from 'react-icons/fa';
 import './css/service.css'
 import axios from 'axios';
 
@@ -46,7 +47,7 @@ const ViewDepartment = () => {
                 <td>{department.name}</td>
                 <td>
                     <button>edit</button>
-                    <button>delete</button>
+                    <button><FaTrash color='red' /></button>
 
                 </td>
                

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { FaEdit, FaTrash,FaTimes } from 'react-icons/fa';
 import axios from 'axios';
 
 const DataDisplay = ({ onItemSelect }) => {
@@ -66,7 +67,7 @@ const DataDisplay = ({ onItemSelect }) => {
               <td>{item.totalAmount}</td>
               <td>
                 <button className='stock-details-btn' onClick={() => onItemSelect(item)}>View Stock Details</button>
-                <button className='delete-btn' onClick={() => handleDelete(item._id)}>Delete</button>
+                <button className='delete-btn' onClick={() => handleDelete(item._id)}><FaTrash color='red'/></button>
               </td>
             </tr>
           ))}

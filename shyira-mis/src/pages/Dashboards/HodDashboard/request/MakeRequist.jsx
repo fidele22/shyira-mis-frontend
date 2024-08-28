@@ -68,7 +68,7 @@ const LogisticRequestForm = () => {
       }, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json' // Ensure content type is JSON
+          'Content-Type': 'application/json' // Ensure content type is J 0788765626 SON
         },
       });
   
@@ -258,7 +258,7 @@ const LogisticRequestForm = () => {
                 <h1>{user.firstName} {user.lastName}</h1>
                 <label htmlFor="hodSignature">HOD Signature:</label>
                 {user.signature ? (
-      <img src={`${process.env.REACT_APP_BACKEND_URL}/uploads/${user.signature}`} alt="Signature" />
+              <img src={`${process.env.REACT_APP_BACKEND_URL}/uploads/${user.signature}`} alt="Signature" />
     ) : (
       <p>No signature available</p>
     )}

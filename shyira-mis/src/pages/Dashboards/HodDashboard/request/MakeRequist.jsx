@@ -258,12 +258,24 @@ const LogisticRequestForm = () => {
       </div>
       
       {showModal && (
-        <div className={`modal ${isSuccess ? 'success' : 'error'}`}>
-          {isSuccess ? <FaCheckCircle /> : <FaTimesCircle />}
-          <p>{modalMessage}</p>
-          <button onClick={() => setShowModal(false)}>Close</button>
+        <div className="modal-overlay">
+          <div className="modal-content">
+            {isSuccess ? (
+              <div className="modal-success">
+                <FaCheckCircle size={54} color="green" />
+                <p>{modalMessage}</p>
+              </div>
+            ) : (
+              <div className="modal-error">
+                <FaTimesCircle size={54} color="red" />
+                <p>{modalMessage}</p>
+              </div>
+            )}
+            <button onClick={() => setShowModal(false)}>Close</button>
+          </div>
         </div>
       )}
+
     </div>
   );
 };

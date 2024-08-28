@@ -206,7 +206,7 @@ const downloadPDF = async () => {
   </label>
   <button onClick={fetchStockData}>Fetch</button>
 </div>
-        <button onClick={fetchStockData}>Fetch</button>
+       
       </div>
       <div className="stock-report" id='report-content' >
 

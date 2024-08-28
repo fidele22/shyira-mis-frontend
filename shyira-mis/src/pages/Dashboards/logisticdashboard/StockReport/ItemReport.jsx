@@ -8,6 +8,9 @@ import './itemreport.css';
 const StockHistoryTable = () => {
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
   const [currentStock, setCurrentStock] = useState([]);
   const [previousStock, setPreviousStock] = useState([]);
   const [stockHistory, setStockHistory] = useState([]);
@@ -27,13 +30,13 @@ const StockHistoryTable = () => {
   const fetchStockData = async () => {
     try {
       // Fetch current month's stock history
-      const currentResponse = await axios.get(`http://localhost:5000/api/stocks/history/${year}/${month}`);
+      const currentResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/stocks/history/${year}/${month}`);
       setCurrentStock(currentResponse.data);
       
       // Fetch previous month's stock history
       const previousMonth = month === 1 ? 12 : month - 1;
       const previousYear = month === 1 ? year - 1 : year;
-      const previousResponse = await axios.get(`http://localhost:5000/api/stocks/history/${previousYear}/${previousMonth}`);
+      const previousResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/stocks/history/${previousYear}/${previousMonth}?start=${startDate}&end=${endDate}`);
       setPreviousStock(previousResponse.data);
 
       aggregateStockData(currentResponse.data, previousResponse.data);
@@ -102,6 +105,7 @@ const StockHistoryTable = () => {
   
   // Handle calculation of total amount
   // Calculate totals
+
   const totalValues = Object.values(aggregatedData).reduce((acc, stock) => {
     acc.openingQuantity += stock.openingQuantity || 0;
     acc.openingTotalAmount += stock.openingTotalAmount || 0;
@@ -126,31 +130,49 @@ const StockHistoryTable = () => {
   setTotals(totalValues);
 };
 
+// filter and display month
+const monthNames = [
+  "January", "February", "March", "April", "May", "June", 
+  "July", "August", "September", "October", "November", "December"
+];
+
+const formattedMonth = monthNames[month - 1];
+const reportTitle = `RAPORO YA STOCK Y'IBIKORESHO BYO MUBIRO UKWEZI KWA ${formattedMonth} ${year}`;
+
 //dowload file
 const downloadPDF = async () => {
   const input = document.getElementById('report-content');
   if (!input) {
-    console.error('Element with ID pdf-content not found');
+    console.error('Element with ID report-content not found');
     return;
   }
 
   try {
-    const canvas = await html2canvas(input);
+    const canvas = await html2canvas(input, { scale: 2 }); // Increase scale for better quality
     const data = canvas.toDataURL('image/png');
-
-    const pdf = new jsPDF();
+    
+    const pdf = new jsPDF('p', 'mm', 'a4'); // Define page size and orientation
     const imgProps = pdf.getImageProperties(data);
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
-    const imgWidth = pdfWidth - 15;
+    const imgWidth = pdfWidth - 10;
     const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+    let position = 0;
 
-    pdf.addImage(data, 'PNG', 5, 5, imgWidth, imgHeight);
-    pdf.save('Report de stock.pdf');
+    // Add images to multiple pages if needed
+    while (position < imgHeight) {
+      pdf.addImage(data, 'PNG', 5, -position, imgWidth, imgHeight);
+      position += pdfHeight - 10;
+      if (position < imgHeight) pdf.addPage();
+    }
+
+    pdf.save('Stock_Report.pdf');
   } catch (error) {
     console.error('Error generating PDF:', error);
   }
 };
+
+
   return (
     <div className="report-content">
   <h1>Get stock report</h1>
@@ -165,6 +187,25 @@ const downloadPDF = async () => {
           Month:
           <input type="number" value={month} onChange={handleMonthChange} min="1" max="12" />
         </label>
+        <div className="date-range-filter">
+  <label>
+    Start Date:
+    <input 
+      type="date" 
+      value={startDate} 
+      onChange={(e) => setStartDate(e.target.value)} 
+    />
+  </label>
+  <label>
+    End Date:
+    <input 
+      type="date" 
+      value={endDate} 
+      onChange={(e) => setEndDate(e.target.value)} 
+    />
+  </label>
+  <button onClick={fetchStockData}>Fetch</button>
+</div>
         <button onClick={fetchStockData}>Fetch</button>
       </div>
       <div className="stock-report" id='report-content' >
@@ -178,7 +219,10 @@ const downloadPDF = async () => {
          <p>HOPITAL DE SHYIRA</p>                                                                           
          <p>BP 56 MUSANZE</p>
          <p>SERVICE LOGISTIQUE</p>
-         <h3>RAPORO YA STOCK Y'IBIKORESHO BYO MUBIRO UKWEZI KWA</h3>
+         <h3>{reportTitle}</h3>
+
+         
+ 
       </div>
       <table className="stock-history-table">
       
@@ -190,6 +234,7 @@ const downloadPDF = async () => {
             <th colSpan="3">EXIT</th>
             <th colSpan="3">BALANCE</th>
           </tr>
+
           <tr>
             <th>Item Name</th>
             <th>Quantity</th>

@@ -55,6 +55,7 @@
     margin-top: 20px;
     background-color: white;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    overflow-x: scroll;
   }
   .items-table .searchbar{
     width: 30%;

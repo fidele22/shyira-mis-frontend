@@ -92,7 +92,7 @@ const DashboardOverview = () => {
   return (
     <div className="logistic-0verview-content">
       <div className="welcome-nav">
-      <h1>Welcome back,{userName}!</h1>
+      <h1>Welcome back</h1>
       </div>
      
 

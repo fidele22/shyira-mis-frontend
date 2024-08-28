@@ -9,8 +9,8 @@ const ViewService = () => {
 
 
   const [services, setServices] = useState([]);
-  const [editPosition, setEditPosition] = useState(null);
-  const [serviceName, setserviceName] = useState('');
+  const [editService, setEditService] = useState(null);
+  const [serviceName, setServiceName] = useState('');
 
 
   useEffect(() => {
@@ -27,21 +27,21 @@ const ViewService = () => {
   }, []);
 
   
-  const handleEditClick = (position) => {
-    setEditPosition(position);
-    setPositionName(position.name);
+  const handleEditClick = (service) => {
+    setEditService(service);
+    setServiceName(service.name);
   };
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/positions/${editPosition._id}`, {
-        name: positionName,
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/positions/${editService._id}`, {
+        name: serviceName,
       });
-      setEditPosition(null);
-      setPositionName('');
+      setEditService(null);
+      setServiceName('');
       // Fetch updated positions
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/positions`);
-      setPositions(response.data);
+      setServices(response.data);
     } catch (error) {
       console.error('Error updating position:', error);
     }
@@ -53,7 +53,7 @@ const ViewService = () => {
       console.log('Delete response:', response.data); // Log the response
       // Fetch updated positions
       const fetchUpdatedPositions = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/positions`);
-      setPositions(fetchUpdatedPositions.data);
+      setServices(fetchUpdatedPositions.data);
     } catch (error) {
       console.error('Error deleting position:', error);
     }
@@ -82,7 +82,7 @@ const ViewService = () => {
                 <td>{service.name}</td>
                 <td>
                     <button>edit</button>
-                    <button><FaTrash  color='red'/></button>
+                    <button onClick={() => handleDelete(service._id)} ><FaTrash  color='red'/></button>
 
                 </td>
                
@@ -96,16 +96,16 @@ const ViewService = () => {
          
        
    
-      {editPosition && (
+      {editService && (
         <div className="edit-form">
           <h2>Edit Service</h2>
           <input
             type="text"
             value={serviceName}
-            onChange={(e) => setserviceName(e.target.value)}
+            onChange={(e) => setServiceName(e.target.value)}
           />
           <button onClick={handleUpdate}>Update</button>
-          <button onClick={() => setEditPosition(null)}>Cancel</button>
+          <button onClick={() => setEditService(null)}>Cancel</button>
         </div>
       )}
     </div>

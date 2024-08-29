@@ -34,13 +34,13 @@ const ViewService = () => {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/positions/${editService._id}`, {
+      await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/services/${editService._id}`, {
         name: serviceName,
       });
       setEditService(null);
       setServiceName('');
       // Fetch updated positions
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/positions`);
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/services`);
       setServices(response.data);
     } catch (error) {
       console.error('Error updating position:', error);
@@ -49,10 +49,10 @@ const ViewService = () => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/positions/${id}`);
+      const response = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/services/${id}`);
       console.log('Delete response:', response.data); // Log the response
       // Fetch updated positions
-      const fetchUpdatedPositions = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/positions`);
+      const fetchUpdatedPositions = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/services`);
       setServices(fetchUpdatedPositions.data);
     } catch (error) {
       console.error('Error deleting position:', error);
@@ -81,7 +81,7 @@ const ViewService = () => {
                 <td>{index+1}</td>
                 <td>{service.name}</td>
                 <td>
-                    <button>edit</button>
+                <button onClick={() => handleEditClick(service)}>Edit</button>
                     <button onClick={() => handleDelete(service._id)} ><FaTrash  color='red'/></button>
 
                 </td>

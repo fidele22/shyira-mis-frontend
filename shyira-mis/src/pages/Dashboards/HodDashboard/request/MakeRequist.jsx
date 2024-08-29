@@ -253,7 +253,7 @@ const LogisticRequestForm = () => {
             <label htmlFor="hodName">Name of HOD</label>
             {user ? (
               <>
-                <h1>{user.firstName} {user.lastName}</h1>
+                <h3>{user.firstName} {user.lastName}</h3>
                 <label htmlFor="hodSignature">HOD Signature:</label>
                 {user.signature ? (
                   <img src={`${process.env.REACT_APP_BACKEND_URL}/uploads/${user.signature}`} alt="Signature" />

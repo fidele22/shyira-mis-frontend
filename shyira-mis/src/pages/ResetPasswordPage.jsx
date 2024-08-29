@@ -27,18 +27,18 @@ const ResetPassword = () => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/reset-password/${token}`, { password });
       console.log(response.data);
-      setModalMessage('Requisition submitted successfully!');
+      setModalMessage('Password reset successfully!');
       setIsSuccess(true); // Set the success state
       setShowModal(true); // Show the modal
          // Redirect to login page or home page after success
          setTimeout(() => {
           navigate('/'); // Redirect to login or another page
-        }, 2000); // 2 seconds delay before redirection
+        }, 5000); // 2 seconds delay before redirection
   
     } catch (error) {
       console.error(error);
-      setModalMessage('Requisition submitted successfully!');
-      setIsSuccess(true); // Set the success state
+      setModalMessage('Password  failed!');
+      setIsSuccess(false); // Set the success state
       setShowModal(true); // Show the modal
     }
   };

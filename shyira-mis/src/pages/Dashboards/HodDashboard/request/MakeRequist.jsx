@@ -249,7 +249,24 @@ const LogisticRequestForm = () => {
               ))}
             </tbody>
           </table>
+          <div>
+            <label htmlFor="hodName">Name of HOD</label>
+            {user ? (
+              <>
+                <h1>{user.firstName} {user.lastName}</h1>
+                <label htmlFor="hodSignature">HOD Signature:</label>
+                {user.signature ? (
+                  <img src={`http://localhost:5000/${user.signature}`} alt="Signature" />
+                ) : (
+                  <p>No signature available</p>
+                )}
+              </>
+            ) : (
+              <p>Loading user profile...</p>
+            )}
+          </div>
 
+         
           <div className="submit-btn">
             <button type="submit">Submit</button>
           </div>

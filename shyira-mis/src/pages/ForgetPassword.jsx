@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { FaTimes, FaCheckCircle,FaTimesCircle } from 'react-icons/fa';
 
 
 const ForgotPassword = () => {
@@ -48,7 +49,7 @@ const ForgotPassword = () => {
                 <p color='red'> {message}</p>
               </div>
             )}
-            <button onClick={() => setShowModal(false)}>Close</button>
+            <button onClick={() => setMessage(false)}>Close</button>
           </div>
     
       )}

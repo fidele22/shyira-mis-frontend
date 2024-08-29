@@ -24,14 +24,19 @@
   
   .modal-content button {
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #af4f4c;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
   }
-  
+  .modal-success p{
+    color: #45a049;
+  }
+  .modal-error p{
+    color: red;
+  }
   .modal-content button:hover {
-    background-color: #45a049;
+    background-color: #ba4338;
   }
   

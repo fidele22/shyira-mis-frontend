@@ -33,7 +33,7 @@ const ResetPassword = () => {
          // Redirect to login page or home page after success
          setTimeout(() => {
           navigate('/'); // Redirect to login or another page
-        }, 5000); // 2 seconds delay before redirection
+        }, 5000); // 5 seconds delay before redirection
   
     } catch (error) {
       console.error(error);
@@ -70,12 +70,12 @@ const ResetPassword = () => {
             {isSuccess ? (
               <div className="modal-success">
                 <FaCheckCircle size={54} color="green" />
-                <p>{modalMessage}</p>
+                <p color='green'>{modalMessage}</p>
               </div>
             ) : (
               <div className="modal-error">
                 <FaTimesCircle size={54} color="red" />
-                <p>{modalMessage}</p>
+                <p color='red'> {modalMessage}</p>
               </div>
             )}
             <button onClick={() => setShowModal(false)}>Close</button>

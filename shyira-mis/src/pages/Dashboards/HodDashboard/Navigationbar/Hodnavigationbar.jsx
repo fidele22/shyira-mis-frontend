@@ -21,14 +21,19 @@ const Navbar = ({ setCurrentPage }) => {
     }));
   };
 
-  const handleLogout = async () => {
+   //handle logout
+   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5000/api/logout');
-      // Clear any user data from state or context
-      // Redirect to login page or home page
-      window.location.href = '/'; // Adjust as needed
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/logout`); // Notify the server of the logout
+  
+      // Remove token from local storage or cookies
+      localStorage.removeItem('authToken'); // Adjust based on how you store tokens
+  
+      // Optionally, redirect to login page
+      window.location.href = '/'; // Adjust the URL as needed
     } catch (error) {
-      alert('error to logout')
+      console.error('Logout failed:', error);
+      // Handle errors (e.g., show a message to the user)
     }
   };
 

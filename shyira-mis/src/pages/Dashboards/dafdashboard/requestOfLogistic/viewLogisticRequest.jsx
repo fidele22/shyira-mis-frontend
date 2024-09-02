@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FaQuestionCircle, FaEdit, FaTimes,FaCheckCircle, FaTimesCircle,FaTrash,FaCheck } from 'react-icons/fa';
 import axios from 'axios';
+import VerifiedLogisticRequest from './verifiedlogisticRequest'
+import ApprovedLogisticRequest from './ApprovedlogisticRequest'
 //import './ViewRequest.css'; // Import CSS for styling
 
 
@@ -23,7 +25,7 @@ const ForwardedRequests = () => {
 
   const fetchLogisticUsers = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/users/logistic-users`);
+      const response = await axios.get('http://localhost:5000/api/users/logistic-users');
       setLogisticUsers(response.data);
     } catch (error) {
       console.error('Error fetching logistic users:', error);
@@ -32,7 +34,7 @@ const ForwardedRequests = () => {
 
   const fetchForwardedRequests = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/LogisticRequest`);
+      const response = await axios.get('http://localhost:5000/api/LogisticRequest');
       setForwardedRequests(response.data);
     } catch (error) {
       console.error('Error fetching forwarded requests:', error);
@@ -78,7 +80,7 @@ const ForwardedRequests = () => {
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/LogisticRequest/${selectedRequest._id}`, formData);
+      const response = await axios.put(`http://localhost:5000/api/LogisticRequest/${selectedRequest._id}`, formData);
       setSelectedRequest(response.data);
       setIsEditing(false);
       setForwardedRequests(prevRequests =>
@@ -96,7 +98,7 @@ const ForwardedRequests = () => {
   e.preventDefault();
   try {
        // Forward the updated request to the approved collection
-       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/LogisticRequest/verified/${selectedRequest._id}`);
+       const response = await axios.post(`http://localhost:5000/api/LogisticRequest/verified/${selectedRequest._id}`);
        setSelectedRequest(response.data);
     
        setModalMessage('logistic requestion verified successfully');
@@ -115,7 +117,7 @@ const ForwardedRequests = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/users/profile`, {
+        const response = await axios.get('http://localhost:5000/api/users/profile', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
@@ -133,15 +135,17 @@ const ForwardedRequests = () => {
 
   return (
     <div className={`verified-requist ${selectedRequest ? 'dim-background' : ''}`}>
-      <h2>Item Requisition Verified</h2>
+
       <div className="verified-request-navigation">
+      <h2>Requisition from logistic office </h2>
         <ul>
           {forwardedRequests.slice().reverse().map((request, index) => (
             <li key={index}>
               <p onClick={() => handleRequestClick(request._id)}>
-          Requisition Form from <b>logistic</b>done on {new Date(request.date).toDateString()}
-        {/* <span>{!request.clicked ? 'New Request' : ''}</span> */} 
-        </p>
+          Requisition Form from <b>logistic</b> done on {new Date(request.date).toDateString()}
+          {/*    <span>{!request.clicked ? 'New Request' : ''}</span> 
+        */}
+      </p>
             </li>
           ))}
         </ul>
@@ -218,11 +222,16 @@ const ForwardedRequests = () => {
               <>
                <div className="form-navigation">
                <button className='verify-requisition' onClick={handleVerifySubmit}>Verify Request</button>
-             <label className='request-cancel-btn' onClick={() => setSelectedRequest(null)}><FaTimes /></label>
+               <button className='edit-btn' onClick={handleEditClick}>Edit</button>
+               <button></button>
+             <label className='request-close-btn' onClick={() => setSelectedRequest(null)}><FaTimes /></label>
           </div>
-              <div className="image-request-recieved">
+            <div className="image-request-recieved">
           <img src="/image/logo2.png" alt="Logo" className="logo" />
           </div>
+          <div className='date-done'>
+            <label htmlFor="">{new Date(selectedRequest.date).toDateString()}</label>
+            </div>
           <div className="request-recieved-heading">
             <h1>WESTERN PROVINCE</h1>
             <h1>DISTRIC: NYABIHU</h1>
@@ -278,7 +287,7 @@ const ForwardedRequests = () => {
                   </div>*/}
                   
                 </div>
-                <button className='edit-btn' onClick={handleEditClick}>Edit</button>
+               
                 
 
 
@@ -307,6 +316,8 @@ const ForwardedRequests = () => {
         </div>
       )}
 
+   <VerifiedLogisticRequest />
+   <ApprovedLogisticRequest />
     </div>
   );
 };

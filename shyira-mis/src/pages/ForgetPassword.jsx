@@ -41,7 +41,7 @@ const ForgotPassword = () => {
             {isSuccess ? (
               <div className="modal-success">
                 <FaCheckCircle size={54} color="green" />
-                <p color='green'>{message}</p>
+                <p>{message}</p>
               </div>
             ) : (
               <div className="modal-error">

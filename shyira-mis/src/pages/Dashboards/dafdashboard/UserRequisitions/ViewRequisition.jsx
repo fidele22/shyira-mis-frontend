@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaQuestionCircle,FaTimesCircle, FaEdit, FaCheckCircle,FaTimes, FaTrash,FaCheck } from 'react-icons/fa';
 import axios from 'axios';
+import ApprovedUserRequisition from './ApproveRequisition'
 import './ViewRequest.css'; // Import CSS for styling
 
 
@@ -168,7 +169,10 @@ const handleSearchSubmit = (e) => {
 
   return (
     <div className={`verified-requist ${selectedRequest ? 'dim-background' : ''}`}>
-       <form onSubmit={handleSearchSubmit} className="search-form">
+       
+      <div className="verified-request-navigation">
+      <h2>User's Requisition for Items Verified</h2>
+      <form onSubmit={handleSearchSubmit} className="search-form">
        <div className='search-department'>
         <label htmlFor="">Search by department</label>
        <input
@@ -193,14 +197,13 @@ const handleSearchSubmit = (e) => {
         
         <button type="submit" className='search-btn'>Search</button>
       </form>
-      <h2>Item Requisition Verified</h2>
+     
       
-      <div className="verified-request-navigation">
         <ul>
           {forwardedRequests.slice().reverse().map((request, index) => (
             <li key={index}>
               <p onClick={() => handleRequestClick(request._id)}>
-          Requisition Form from department of <u><b>{request.department}</b> </u>done on {new Date(request.updatedAt).toDateString()}
+          Requisition Form from department of <b>{request.department}</b> verified  on {new Date(request.updatedAt).toDateString()}
           <span>{!request.clicked ? 'New Request' : ''}</span> <label htmlFor=""><FaCheck /> Verified</label>
         </p>
             </li>
@@ -279,7 +282,9 @@ const handleSearchSubmit = (e) => {
               <>
                <div className="form-navigation">
                <button className='approve-request-btn' onClick={handleApproveSubmit}>Approve Request</button>
-             <label className='request-cancel-btn' onClick={() => setSelectedRequest(null)}><FaTimes /></label>
+               <button className='edit-btn' onClick={handleEditClick}>Edit</button>
+               <button></button>
+             <label className='request-close-btn' onClick={() => setSelectedRequest(null)}><FaTimes /></label>
           </div>
               <div className="image-request-recieved">
           <img src="/image/logo2.png" alt="Logo" className="logo" />
@@ -357,7 +362,7 @@ const handleSearchSubmit = (e) => {
                       <div key={user._id} className="logistic-user">
                         <p>{user.firstName} {user.lastName}</p>
                         {user.signature ? (
-                          <img src={`http://localhost:5000/${user.signature}`} alt={`${user.firstName} ${user.lastName} Signature`} />
+                          <img src={`http://localhost:5000/${user.signature}`}  />
                         ) : (
                           <p>No signature available</p>
                         )}
@@ -366,7 +371,7 @@ const handleSearchSubmit = (e) => {
                   </div>
                  
                 </div>
-                <button className='edit-btn' onClick={handleEditClick}>Edit</button>
+             
                 
 
 
@@ -375,6 +380,8 @@ const handleSearchSubmit = (e) => {
           </div>
         </div>
       )}
+
+      <ApprovedUserRequisition />
     </div>
   );
 };

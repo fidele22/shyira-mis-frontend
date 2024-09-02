@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaHome, FaPlus, FaFileExcel, FaList, FaBoxOpen, FaClipboardCheck, 
+import { FaHome, FaPlus, FaFileExcel,FaTrash , FaList, FaBoxOpen, FaClipboardCheck, 
   FaClipboardList, FaChartBar, FaUser, FaSignOutAlt,FaLifeRing ,FaGasPump } from 'react-icons/fa';
 import '../../logisticdashboard/Navigationbar/Navigationbar.css';
 import axios from 'axios';
@@ -7,9 +7,9 @@ import axios from 'axios';
 const Navbar = ({ setCurrentPage }) => {
   const [dropdownsOpen, setDropdownsOpen] = useState({
     request: false,
-    logisticrequest:false,
     requisitions: false,
     fuelrequest:false,
+    userRequest:false
   });
 
   const toggleDropdown = (dropdownName) => {
@@ -32,37 +32,39 @@ const Navbar = ({ setCurrentPage }) => {
 
   return (
     <div className="navigation">
-      <h2>DAF Dashboard</h2>
+      <h2>Direct General</h2>
       <ul>
         <li onClick={() => setCurrentPage('overview')}><FaHome /> Overview</li>
         <li onClick={() => setCurrentPage('view-stock-items')}> <FaList /> stock Items</li>
-        <li onClick={() => toggleDropdown('logisticrequest')} className="dropdown">
-        <FaBoxOpen /> Logistic Requisition
-          {dropdownsOpen.logisticrequest && (
-            <ul className="dropdown-menu">
-              <li onClick={() => setCurrentPage('view-logistic-request')}><FaList /> View Requisition </li>
-              <li onClick={() => setCurrentPage('recieved-logistic-order')}><FaClipboardCheck/> Recieved Requisition</li>
-              <li onClick={() => setCurrentPage('rejected-logistic-order')}><FaClipboardCheck/> Rejected Requisition</li>
-            </ul>
-          )}
-        </li>
         <li onClick={() => toggleDropdown('request')} className="dropdown">
-        <FaBoxOpen /> User Requisition
+        <FaBoxOpen />  Logistic Requisition
           {dropdownsOpen.request && (
             <ul className="dropdown-menu">
-              <li onClick={() => setCurrentPage('view-request')}><FaList /> Verified requisition</li> 
-              <li onClick={() => setCurrentPage('recieved-requisition')}><FaClipboardCheck/> Recieved Requisition</li>
-              <li onClick={() => setCurrentPage('rejected-requisition')}><FaClipboardCheck/> Rejected Requisition</li>
+              <li onClick={() => setCurrentPage('view-logistic-request')}><FaList /> verified requisition</li>
+              <li onClick={() => setCurrentPage('logistic-recieved')}><FaClipboardCheck /> Requisition Recieved</li>
+              <li onClick={() => setCurrentPage('logistic-rejected-order')}><FaTrash />Requisition Rejected</li> 
+
             </ul>
           )}
         </li>
-        
+        <li onClick={() => toggleDropdown('userRequest')} className="dropdown">
+        <FaBoxOpen />  User Requisition
+          {dropdownsOpen.userRequest && (
+            <ul className="dropdown-menu">
+              <li onClick={() => setCurrentPage('user-request-status')}><FaList />requisition status</li>
+              <li onClick={() => setCurrentPage('user-request-recieved')}><FaClipboardCheck /> Requisition Recieved</li>
+              <li onClick={() => setCurrentPage('logistic-rejected-order')}><FaTrash />Requisition Rejected</li> 
+
+            </ul>
+          )}
+        </li>
         <li onClick={() => toggleDropdown('fuelrequest')} className="dropdown">
         <FaGasPump />  Fuel Requisition
           {dropdownsOpen.fuelrequest && (
             <ul className="dropdown-menu">
-              <li onClick={() => setCurrentPage('view-fuel-request')}><FaList /> View verified Request</li>
-              <li onClick={() => setCurrentPage('view-aproved')}><FaClipboardCheck/> Approved Request</li>
+              <li onClick={() => setCurrentPage('view-fuel-request')}><FaList /> Fuel requisition status</li>
+              <li onClick={() => setCurrentPage('viewfuel-aproved')}><FaClipboardCheck/> Approved fuel request</li>
+              <li onClick={() => setCurrentPage('viewfuel-rejected')}><FaClipboardCheck/> Rejected fuel request</li>
             </ul>
           )}
         </li>

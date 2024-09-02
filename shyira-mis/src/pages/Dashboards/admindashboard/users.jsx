@@ -236,7 +236,7 @@ const ViewItems = () => {
         {editingUser && (
           <div className="editing-userdata-ovelay">
             <div className="editinguser-form">
-            <button className='close-btn' onClick={handleCloseForm}>
+            <button className='edit-user-close-btn' onClick={handleCloseForm}>
                 <FaTimes size={24} color="darkred" />
               </button>
               <form onSubmit={handleSubmit}>

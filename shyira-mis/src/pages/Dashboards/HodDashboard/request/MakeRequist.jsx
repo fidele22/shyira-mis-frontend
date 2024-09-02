@@ -163,7 +163,16 @@ const LogisticRequestForm = () => {
           <div className="image-logo">
             <img src="/image/logo.png" alt="Logo" className="logo" />
           </div>
-
+          <div className="date-field">
+              <label htmlFor="date">Date:</label>
+              <input
+                type="date"
+                id="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+              />
+            </div>
           <div className="heading-title">
             <div className="title">
               <h3>WESTERN PROVINCE</h3>
@@ -253,7 +262,7 @@ const LogisticRequestForm = () => {
             <label htmlFor="hodName">Name of HOD</label>
             {user ? (
               <>
-                <h4>{user.firstName} {user.lastName}</h4>
+                <h5>{user.firstName} {user.lastName}</h5>
                 <label htmlFor="hodSignature">HOD Signature:</label>
                 {user.signature ? (
                   <img src={`${process.env.REACT_APP_BACKEND_URL}/uploads/${user.signature}`} alt="Signature" />

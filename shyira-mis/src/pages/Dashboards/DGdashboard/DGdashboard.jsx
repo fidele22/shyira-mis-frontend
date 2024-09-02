@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import Navigation from '../navbar/Navbar'
 import Footer from '../footer/Footer'
-import Navbar from './Navigationbar/Dafnavigationbar';
+import Navbar from './Navigationbar/DGnavigationbar';
 import Overview from './Overview';
-import ViewRequest from './request/ViewRequest'
+import ViewRequest from './userRequisition/RequestVerified'
 import ViewApproved from '../logisticdashboard/Requests/approvedRequest'
 import ViewLogisticRequest from './requestOfLogistic/viewLogisticRequest'
 import ViewFuelRequest from './fuelRequest/fuelRequisition'
-import ViewItems from '../HodDashboard/items/viewItems'
+import UserRequestStatus from './userRequisition/userRequestStatus'
+import UserRequestRecieved from '../logisticdashboard/receivedRequisitions/itemRequestReceived'
+import ViewItems from './StockItem/viewitems'
+import Logisticrecieved from '../logisticdashboard/OrderSupply/RecievedOrder'
 import DafProfile from './DafProfile'
 //import OrderSupplies from './OrderSupplies';
 import './DafDashboard.css';
@@ -26,7 +29,14 @@ const LogisticDashboard = () => {
           return <DafProfile />;
       case 'view-stock-items':
           return <ViewItems/>
+      case 'user-request-status':
+         return <UserRequestStatus />
 
+   case 'user-request-recieved':
+    return <UserRequestRecieved />
+
+      case 'logistic-recieved':
+      return <Logisticrecieved/>
       case 'view-aproved':
         return <ViewApproved/>    
      case 'view-logistic-request':

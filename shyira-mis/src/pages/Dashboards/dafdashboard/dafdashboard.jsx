@@ -5,7 +5,9 @@ import Navbar from './Navigationbar/Dafnavigationbar';
 import Overview from './Overview';
 import ViewRequest from './UserRequisitions/ViewRequisition'
 import ViewLogisticRequest from './requestOfLogistic/viewLogisticRequest'
+import RecievedLogisticOrder from '../logisticdashboard/OrderSupply/RecievedOrder'
 import ViewFuelRequest from './fuelRequest/fuelRequisition'
+import ViewItems from '../DGdashboard/StockItem/viewitems'
 import DafProfile from './DafProfile'
 import './DafDashboard.css';
 
@@ -22,6 +24,10 @@ const LogisticDashboard = () => {
       case 'logistic-profile':
           return <DafProfile />;
 
+          case 'view-stock-items':
+            return <ViewItems/>
+      case 'recieved-logistic-order':
+         return <RecievedLogisticOrder />
      case 'view-logistic-request':
           return <ViewLogisticRequest />
      case 'view-fuel-request':

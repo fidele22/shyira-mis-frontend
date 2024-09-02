@@ -54,7 +54,7 @@ const ApprovedRequests = () => {
               <div className="hod">
                 <p><strong>HOD Name:</strong> {request.hodName}</p>
                 {request.hodSignature ? (
-                  <img src={`http://localhost:5000/${request.hodSignature}`} alt="HOD Signature" />
+                  <img src={`${process.env.REACT_APP_BACKEND_URL}/${request.hodSignature}`} alt="HOD Signature" />
                 ) : (
                   <p>No HOD signature available</p>
                 )}

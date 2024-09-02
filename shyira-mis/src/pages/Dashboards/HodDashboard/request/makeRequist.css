@@ -49,6 +49,12 @@
 .form-group {
   margin-bottom: 15px;
 }
+.date-field{
+  position: absolute;
+  right: 10%;
+  margin-top: 20%;
+  display: block;
+}
 
 label {
   display: block;

@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './fuelrequest.css'; // Make sure to add CSS for styling
 
@@ -6,12 +6,13 @@ const RequisitionForm = () => {
   const [requesterName, setRequesterName] = useState('');
   const [carPlaque, setCarPlaque] = useState('');
   const [kilometers, setKilometers] = useState('');
-  const [remainingliters, setRemainingLiters] = useState('');
+  const [remainingLiters, setRemainingLiters] = useState('');
   const [average, setAverage] = useState('');
   const [quantityRequested, setQuantityRequested] = useState('');
   const [quantityReceived, setQuantityReceived] = useState('');
   const [destination, setDestination] = useState('');
   const [reasonOption, setReasonOption] = useState('');
+  const [file, setFile] = useState(null); // New state for file
   const [user, setUser] = useState(null);
 
   const [carOptions, setCarOptions] = useState([]);
@@ -21,13 +22,10 @@ const RequisitionForm = () => {
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        const carResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/forms-data/cars`);
+        const carResponse = await axios.get('http://localhost:5000/api/forms-data/cars');
         setCarOptions(carResponse.data);
 
-        const destinationResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/forms-data/destinations`);
-        setDestinationOptions(destinationResponse.data);
-
-        const reasonResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/forms-data/reasons`);
+        const reasonResponse = await axios.get('http://localhost:5000/api/forms-data/reasons');
         setReasonOptions(reasonResponse.data);
       } catch (error) {
         console.error('Error fetching options:', error);
@@ -37,222 +35,193 @@ const RequisitionForm = () => {
     fetchOptions();
   }, []);
 
-
-
-
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Log the state values to ensure they are set correctly
-    console.log("Requester Name:", requesterName);
-    console.log("Car Plaque:", carPlaque);
-    console.log("Kilometers:", kilometers);
-    console.log("average:", setAverage);
-    console.log("remainingliters:", remainingliters);
-    console.log("Quantity Requested:", quantityRequested);
-    console.log("Quantity Received:", quantityReceived);
-    console.log("Destination:", destination);
-    console.log("Modify Option:", reasonOption);
-
-    // Check if all required fields are filled
     if (!requesterName || !carPlaque || !kilometers || !quantityRequested) {
-        alert("Please fill in all required fields.");
-        return;
+      alert("Please fill in all required fields.");
+      return;
     }
 
-    // Create a FormData object
-    const formData = {
-        requesterName,
-        carPlaque,
-        kilometers,
-        remainingliters,
-        average,
-        quantityRequested,
-        quantityReceived,
-        destination,
-        reasonOption,
-        hodName: user ? `${user.firstName} ${user.lastName}` : '',
-        hodSignature: user && user.signature ? user.signature : ''
-    };
-
-    try {
-        // Send the data to the backend as JSON instead of FormData
-        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/fuel-requisition/submit`, formData, {
-            headers: {
-                'Content-Type': 'application/json',
-        
-            },
-        });
-
-        console.log(response.data);
-        alert('Requisition submitted successfully!');
-        
-        // Reset form fields
-        setRequesterName('');
-        setCarPlaque('');
-        setKilometers('');
-        setAverage('');
-        setRemainingLiters('');
-        setQuantityRequested('');
-        setQuantityReceived('');
-        setDestination('');
-        setReasonOption('');
-    } catch (error) {
-        console.error('Error submitting requisition:', error);
-        alert('Error submitting requisition');
+    const formData = new FormData();
+    formData.append('requesterName', requesterName);
+    formData.append('carPlaque', carPlaque);
+    formData.append('kilometers', kilometers);
+    formData.append('remainingLiters', remainingLiters);
+    formData.append('average', average);
+    formData.append('quantityRequested', quantityRequested);
+    formData.append('quantityReceived', quantityReceived);
+    formData.append('destination', destination);
+    formData.append('reasonOption', reasonOption);
+    formData.append('hodName', user ? `${user.firstName} ${user.lastName}` : '');
+    formData.append('hodSignature', user && user.signature ? user.signature : '');
+    if (file) {
+      formData.append('file', file);
     }
-};
-//fetching user name and signature
-useEffect(() => {
-  const fetchUserProfile = async () => {
+
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/users/profile`, {
+      const response = await axios.post('http://localhost:5000/api/fuel-requisition/submit', formData, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+          'Content-Type': 'multipart/form-data',
+        },
       });
-      setUser(response.data);
+
+      console.log(response.data);
+      alert('Requisition submitted successfully!');
+      
+      setRequesterName('');
+      setCarPlaque('');
+      setKilometers('');
+      setAverage('');
+      setRemainingLiters('');
+      setQuantityRequested('');
+      setQuantityReceived('');
+      setDestination('');
+      setReasonOption('');
+      setFile(null);
     } catch (error) {
-      console.error('Error fetching profile:', error);
+      console.error('Error submitting requisition:', error);
+      alert('Error submitting requisition');
     }
   };
 
-  fetchUserProfile();
-}, []);
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/users/profile', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        setUser(response.data);
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   return (
     <div className="requisition-form">
-      <h2>Fuel Requisition Form</h2>
-      <form onSubmit={handleSubmit}>
+   
      
-          <div className="user-name">
-          <label htmlFor="requesterName">Name of Requester:</label>
-          <input
-            type="text"
-            id="requesterName"
-            value={requesterName}
-            onChange={(e) => setRequesterName(e.target.value)}
-            required
-          />
-        </div>
-        
-        <div className="form-group">
-        <div className="right">
-        <label htmlFor="carPlaque">Plaque of Car:</label>
-          <select
-            id="carPlaque"
-            value={carPlaque}
-            onChange={(e) => setCarPlaque(e.target.value)}
-            required
-          >
-            <option value="">Select Plaque</option>
-            {carOptions.map((car) => (
-              <option key={car._id} value={car.plaque}>
-                {car.plaque}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="left">
-          <label htmlFor="kilometers">Kilometers:</label>
-          <input
-            type="number"
-            id="kilometers"
-            value={kilometers}
-            onChange={(e) => setKilometers(e.target.value)}
-            required
-          />
+        <form onSubmit={handleSubmit}>
+        <div className="image-logo">
+            <img src="/image/logo2.png" alt="Logo" className="logo" />
           </div>
-        </div>
-        <div className="form-group">
-         
-         <div className="right">
-         <label htmlFor="remainingliters">Remaining liters:</label>
-         <input
-           type="number"
-           id="RemainingLiters"
-           value={remainingliters}
-           onChange={(e) => setRemainingLiters(e.target.value)}
-           required
-         />
-       </div>
-       <div className="left">
-       <label htmlFor="average">Average km/l :</label>
-         <input
-           type="number"
-           id="average"
-           value={average}
-           onChange={(e) => setAverage(e.target.value)}
-         />
-       </div>
-         </div>
+         <h2>Fuel Requisition Form</h2> 
+        <div className="left-content">
+          <div className="form-group">
+            <label htmlFor="requesterName">Name of Requester:</label>
+            <input
+              type="text"
+              id="requesterName"
+              value={requesterName}
+              onChange={(e) => setRequesterName(e.target.value)}
+              required
+            />
+          </div>
 
-        <div className="form-group">
-          <div className="right">
-          <label htmlFor="quantityRequested">Quantity Requested (liters):</label>
-          <input
-            type="number"
-            id="quantityRequested"
-            value={quantityRequested}
-            onChange={(e) => setQuantityRequested(e.target.value)}
-            required
-          />
-        </div>
-        <div className="left">
-        <label htmlFor="quantityReceived">Quantity Received (liters):</label>
-          <input
-            type="number"
-            id="quantityReceived"
-            value={quantityReceived}
-            onChange={(e) => setQuantityReceived(e.target.value)}
-          />
-        </div>
+          <div className="form-group">
+            <label htmlFor="carPlaque">Plaque of Car:</label>
+            <select
+              id="carPlaque"
+              value={carPlaque}
+              onChange={(e) => setCarPlaque(e.target.value)}
+              required
+            >
+              <option value="">Select Plaque</option>
+              {carOptions.map((car) => (
+                <option key={car._id} value={car.registerNumber}>
+                  {car.registerNumber}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="kilometers">Kilometers:</label>
+            <input
+              type="number"
+              id="kilometers"
+              value={kilometers}
+              onChange={(e) => setKilometers(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="remainingliters">Remaining Liters:</label>
+            <input
+              type="number"
+              id="remainingliters"
+              value={remainingLiters}
+              onChange={(e) => setRemainingLiters(e.target.value)}
+              required
+            />
+          </div>
+
+        
+
+          <div className="form-group">
+            <label htmlFor="quantityRequested">Quantity Requested (liters):</label>
+            <input
+              type="number"
+              id="quantityRequested"
+              value={quantityRequested}
+              onChange={(e) => setQuantityRequested(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="quantityReceived">Quantity Received (liters):</label>
+            <input
+              type="number"
+              id="quantityReceived"
+              value={quantityReceived}
+              
+            />
+          </div>
           </div>
     
+
+      <div className="right-content">
         <div className="form-group">
-        <div className="right">
-        <label htmlFor="destination">Previous Destination Report:</label>
-        <input type="file" />
-        </div>
-        
-        <div className="left">
-        <label htmlFor="modifyOption">Reason:</label>
-          <select
-            id="modifyOption"
-            value={reasonOption}
-            onChange={(e) => setReasonOption(e.target.value)}
-          >
-            <option value="">Select Reason</option>
-            {reasonOptions.map((reason) => (
-              <option key={reason._id} value={reason.description}>
-                {reason. reason}
-              </option>
-            ))}
-          </select>
-        </div>
-        </div>
-        
-        <div>
-            <label htmlFor="hodName">Name of HOD</label>
-            {user ? (
-              <>
-                <h1>{user.firstName} {user.lastName}</h1>
-                <label htmlFor="hodSignature">HOD Signature:</label>
-                {user.signature ? (
-                  <img src={`http://localhost:5000/${user.signature}`} alt="Signature" />
-                ) : (
-                  <p>No signature available</p>
-                )}
-              </>
-            ) : (
-              <p>Loading user profile...</p>
-            )}
+        <div className="form-group">
+            <label htmlFor="destination">Previous Destination Report:</label>
+            <input
+              type="file"
+              id="destination"
+              onChange={handleFileChange}
+            />
           </div>
-        
-        <button type="submit">Send Requisition</button>
-      </form>
-    </div>
+        </div>
+       </div>
+        <div className="form-group">
+          <button type="submit" className="submit-button">Submit</button>
+        </div>
+        </form>
+       
+
+
+        <div className="form-group">
+          <label>HOD Signature:</label>
+          {user && user.signature ? (
+            <img src={user.signature} alt="HOD Signature" className="signature" />
+          ) : (
+            <p>No signature available</p>
+          )}
+        </div>
+
+       
+      </div>
+    
   );
 };
 

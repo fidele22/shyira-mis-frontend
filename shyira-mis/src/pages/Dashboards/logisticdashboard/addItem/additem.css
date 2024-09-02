@@ -1,9 +1,11 @@
-
+.add-new-item {
+  width: 100%;
+  display: flex;
+}
   /* Container styles */
  .additem {
-    width: 100%;
-    max-width: 500px;
-    margin: 50px auto;
+    width: 500px;
+    margin: 0px auto;
     padding: 20px;
     background-color: #fdfafa;
     border-radius: 8px;
@@ -15,7 +17,7 @@
     text-align: center;
     margin-bottom: 20px;
     font-size: 24px;
-    color: #333;
+    color: #0281f0;
   }
   
   /* Form styles */
@@ -41,33 +43,25 @@
     font-size: 16px;
   }
   
-
-  .import-container {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    
-    width: 100%;
-    text-align: center;
-  
-  }
-  .import-container{
-    display: flex;
-
-  }
-  .import-container button{
-    background-color: #007bff;
-    font-size: 20px;
-  }
-  .import-container label{
-    padding: 10px;
-  }
+.upload-data{
+  background-color:white;
+  padding: 20px;
+  border-radius:8px;
+}
+.upload-btn{
+  text-align: center;
+  background-color: rgb(3, 162, 3);
+  font-size: 20px;
+  margin-left: 50%;
+}
+.upload-btn:hover{
+  background-color: green;
+}  
   /* Input file field */
   input[type="file"] {
     display: block;
     margin: 10px auto;
-    padding: 10px;
+    padding: 20px;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
